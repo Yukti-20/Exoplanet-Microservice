@@ -14,6 +14,7 @@ type ExoplanetService struct {
 func RegisterRoutes(router *mux.Router, service *ExoplanetService) {
 	router.HandleFunc("/add/exoplanets", service.AddExoplanet).Methods("POST")
 	router.HandleFunc("/list/exoplanets", service.ListExoplanets).Methods("GET")
+	router.HandleFunc("/get/exoplanet/{id}", service.GetExoplanetByID).Methods("GET")
 }
 
 func NewAPIHandler(

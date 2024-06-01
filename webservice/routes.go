@@ -3,6 +3,7 @@ package webservice
 import (
 	"encoding/json"
 	"exoplanet-microservice/models"
+	"github.com/gorilla/mux"
 	"net/http"
 )
 
@@ -24,5 +25,22 @@ func (s *ExoplanetService) AddExoplanet(w http.ResponseWriter, r *http.Request) 
 
 func (s *ExoplanetService) ListExoplanets(w http.ResponseWriter, r *http.Request) {
 	exoplanets := s.domain.ListExoplanets()
-	json.NewEncoder(w).Encode(exoplanets)
+	err := json.NewEncoder(w).Encode(exoplanets)
+	if err != nil {
+		return
+	}
+}
+
+func (s *ExoplanetService) GetExoplanetByID(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	exoplanet, exists := s.domain.GetExoplanetById(id)
+	if !exists {
+		http.Error(w, "Exoplanet not found", http.StatusNotFound)
+		return
+	}
+	err := json.NewEncoder(w).Encode(exoplanet)
+	if err != nil {
+		return
+	}
 }

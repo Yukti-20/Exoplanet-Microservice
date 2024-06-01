@@ -17,3 +17,8 @@ func (d *Domain) ListExoplanets() []models.Exoplanet {
 	}
 	return exoplanets
 }
+
+func (d *Domain) GetExoplanetById(id string) (models.Exoplanet, bool) {
+	exoplanet, exists := d.Exoplanets[id]
+	return exoplanet, exists
+}
