@@ -8,4 +8,5 @@ type exoplanet interface {
 	GetExoplanetById(id string) (models.Exoplanet, bool)
 	UpdateExoplanetById(id string, exoplanet models.Exoplanet) bool
 	DeleteExoplanet(id string) bool
+	GetFuelEstimation(exoplanet models.Exoplanet, crewCapacity int64) (float64, error)
 }

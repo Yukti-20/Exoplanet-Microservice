@@ -5,6 +5,7 @@ import (
 	"exoplanet-microservice/models"
 	"github.com/gorilla/mux"
 	"net/http"
+	"strconv"
 )
 
 func (s *ExoplanetService) AddExoplanet(w http.ResponseWriter, r *http.Request) {
@@ -71,4 +72,30 @@ func (s *ExoplanetService) DeleteExoplanetById(w http.ResponseWriter, r *http.Re
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)
+}
+
+func (s *ExoplanetService) FuelEstimation(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	exoplanet, exists := s.domain.GetExoplanetById(id)
+	if !exists {
+		http.Error(w, "Exoplanet not found", http.StatusNotFound)
+		return
+	}
+	crewCapacity, err := strconv.Atoi(r.URL.Query().Get("crew"))
+	if err != nil {
+		http.Error(w, "Invalid crew capacity", http.StatusBadRequest)
+		return
+	}
+
+	fuel, typeErr := s.domain.GetFuelEstimation(exoplanet, int64(crewCapacity))
+	if typeErr != nil {
+		http.Error(w, typeErr.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = json.NewEncoder(w).Encode(map[string]float64{"Fuel Estimation ": fuel})
+	if err != nil {
+		return
+	}
 }

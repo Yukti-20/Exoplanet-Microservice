@@ -1,6 +1,7 @@
 package standard
 
 import (
+	"errors"
 	"exoplanet-microservice/models"
 	"github.com/google/uuid"
 )
@@ -38,4 +39,18 @@ func (d *Domain) DeleteExoplanet(id string) bool {
 		return true
 	}
 	return false
+}
+
+func (d *Domain) GetFuelEstimation(exoplanet models.Exoplanet, crewCapacity int64) (float64, error) {
+	var gravity, fuel float64
+	if exoplanet.Type == "GasGiant" {
+		gravity = 0.5 / (exoplanet.Radius * exoplanet.Radius)
+	} else if exoplanet.Type == "Terrestrial" {
+		gravity = exoplanet.Mass / (exoplanet.Radius * exoplanet.Radius)
+	} else {
+		return fuel, errors.New("unknown exoplanet type")
+	}
+
+	fuel = float64(exoplanet.DistanceFromEarth) / (gravity * gravity) * float64(crewCapacity)
+	return fuel, nil
 }
