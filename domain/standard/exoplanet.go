@@ -6,9 +6,10 @@ import (
 	"github.com/google/uuid"
 )
 
-func (d *Domain) AddExoplanet(exoplanet models.Exoplanet) {
+func (d *Domain) AddExoplanet(exoplanet models.Exoplanet) models.Exoplanet {
 	exoplanet.ID = uuid.New().String() //Generating unique Id
 	d.Exoplanets[exoplanet.ID] = exoplanet
+	return exoplanet
 }
 
 func (d *Domain) ListExoplanets() []models.Exoplanet {

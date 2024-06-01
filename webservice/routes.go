@@ -15,7 +15,7 @@ func (s *ExoplanetService) AddExoplanet(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	s.domain.AddExoplanet(exoplanet)
+	exoplanet = s.domain.AddExoplanet(exoplanet)
 
 	w.WriteHeader(http.StatusCreated)
 	err := json.NewEncoder(w).Encode(exoplanet)
@@ -65,13 +65,19 @@ func (s *ExoplanetService) UpdateExoplanetById(w http.ResponseWriter, r *http.Re
 }
 
 func (s *ExoplanetService) DeleteExoplanetById(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
 	id := vars["id"]
 	if !s.domain.DeleteExoplanet(id) {
 		http.Error(w, "Exoplanet not found", http.StatusNotFound)
 		return
 	}
-	w.WriteHeader(http.StatusNoContent)
+	w.WriteHeader(http.StatusOK)
+	response := map[string]string{"message": "Deleted Exoplanet Successfully"}
+	err := json.NewEncoder(w).Encode(response)
+	if err != nil {
+		return
+	}
 }
 
 func (s *ExoplanetService) FuelEstimation(w http.ResponseWriter, r *http.Request) {
