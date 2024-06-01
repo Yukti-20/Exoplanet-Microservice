@@ -31,7 +31,7 @@ func (s *ExoplanetService) ListExoplanets(w http.ResponseWriter, r *http.Request
 	}
 }
 
-func (s *ExoplanetService) GetExoplanetByID(w http.ResponseWriter, r *http.Request) {
+func (s *ExoplanetService) GetExoplanetById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 	exoplanet, exists := s.domain.GetExoplanetById(id)
@@ -43,4 +43,19 @@ func (s *ExoplanetService) GetExoplanetByID(w http.ResponseWriter, r *http.Reque
 	if err != nil {
 		return
 	}
+}
+
+func (s *ExoplanetService) UpdateExoplanetById(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	var exoplanet models.Exoplanet
+	if err := json.NewDecoder(r.Body).Decode(&exoplanet); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if !s.domain.UpdateExoplanetById(id, exoplanet) {
+		http.Error(w, "Exoplanet not found", http.StatusNotFound)
+		return
+	}
+	json.NewEncoder(w).Encode(exoplanet)
 }
