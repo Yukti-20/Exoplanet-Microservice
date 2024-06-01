@@ -21,3 +21,8 @@ func (s *ExoplanetService) AddExoplanet(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 }
+
+func (s *ExoplanetService) ListExoplanets(w http.ResponseWriter, r *http.Request) {
+	exoplanets := s.domain.ListExoplanets()
+	json.NewEncoder(w).Encode(exoplanets)
+}
