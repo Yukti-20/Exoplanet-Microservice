@@ -1,6 +1,7 @@
 package main
 
 import (
+	"exoplanet-microservice/domain/standard"
 	"exoplanet-microservice/webservice"
 	"github.com/gorilla/mux"
 	"log"
@@ -9,10 +10,8 @@ import (
 
 func main() {
 	router := mux.NewRouter()
-	service := webservice.NewExoplanetService()
-	registerRoutes(router, service)
+	stdDomain := standard.NewExoplanetDomain()
+	handlerInstance := webservice.NewAPIHandler(stdDomain)
+	webservice.RegisterRoutes(router, handlerInstance)
 	log.Fatal(http.ListenAndServe(":8080", router))
-}
-
-func registerRoutes(router *mux.Router, service *webservice.ExoplanetService) {
 }

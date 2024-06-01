@@ -1,15 +1,23 @@
 package webservice
 
 import (
+	"exoplanet-microservice/domain"
 	"exoplanet-microservice/models"
+	"github.com/gorilla/mux"
 )
 
 type ExoplanetService struct {
-	exoplanets map[string]models.Exoplanet
+	Exoplanets map[string]models.Exoplanet
+	domain     domain.Service
 }
 
-func NewExoplanetService() *ExoplanetService {
+func RegisterRoutes(router *mux.Router, service *ExoplanetService) {
+	router.HandleFunc("/exoplanets", service.AddExoplanet).Methods("POST")
+}
+
+func NewAPIHandler(
+	d domain.Service) *ExoplanetService {
 	return &ExoplanetService{
-		exoplanets: make(map[string]models.Exoplanet),
+		domain: d,
 	}
 }
