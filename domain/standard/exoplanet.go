@@ -44,9 +44,9 @@ func (d *Domain) DeleteExoplanet(id string) bool {
 
 func (d *Domain) GetFuelEstimation(exoplanet models.Exoplanet, crewCapacity int64) (float64, error) {
 	var gravity, fuel float64
-	if exoplanet.Type == "GasGiant" {
+	if exoplanet.Type == models.GasGiant {
 		gravity = 0.5 / (exoplanet.Radius * exoplanet.Radius)
-	} else if exoplanet.Type == "Terrestrial" {
+	} else if exoplanet.Type == models.Terrestrial {
 		gravity = exoplanet.Mass / (exoplanet.Radius * exoplanet.Radius)
 	} else {
 		return fuel, errors.New("unknown exoplanet type")

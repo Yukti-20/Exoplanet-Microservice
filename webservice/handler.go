@@ -4,6 +4,7 @@ import (
 	"exoplanet-microservice/domain"
 	"exoplanet-microservice/models"
 	"github.com/gorilla/mux"
+	"net/http"
 )
 
 type ExoplanetService struct {
@@ -12,12 +13,12 @@ type ExoplanetService struct {
 }
 
 func RegisterRoutes(router *mux.Router, service *ExoplanetService) {
-	router.HandleFunc("/add/exoplanets", service.AddExoplanet).Methods("POST")
-	router.HandleFunc("/list/exoplanets", service.ListExoplanets).Methods("GET")
-	router.HandleFunc("/get/exoplanet/{id}", service.GetExoplanetById).Methods("GET")
-	router.HandleFunc("/update/exoplanet/{id}", service.UpdateExoplanetById).Methods("POST")
-	router.HandleFunc("/delete/exoplanet/{id}", service.DeleteExoplanetById).Methods("DELETE")
-	router.HandleFunc("/fuel/estimation/{id}", service.FuelEstimation).Methods("GET")
+	router.HandleFunc("/add/exoplanets", service.AddExoplanet).Methods(http.MethodPost)
+	router.HandleFunc("/list/exoplanets", service.ListExoplanets).Methods(http.MethodGet)
+	router.HandleFunc("/get/exoplanet/{id}", service.GetExoplanetById).Methods(http.MethodGet)
+	router.HandleFunc("/update/exoplanet/{id}", service.UpdateExoplanetById).Methods(http.MethodPost)
+	router.HandleFunc("/delete/exoplanet/{id}", service.DeleteExoplanetById).Methods(http.MethodDelete)
+	router.HandleFunc("/fuel/estimation/{id}", service.FuelEstimation).Methods(http.MethodGet)
 }
 
 func NewAPIHandler(
