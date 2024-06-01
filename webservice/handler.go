@@ -16,6 +16,7 @@ func RegisterRoutes(router *mux.Router, service *ExoplanetService) {
 	router.HandleFunc("/list/exoplanets", service.ListExoplanets).Methods("GET")
 	router.HandleFunc("/get/exoplanet/{id}", service.GetExoplanetById).Methods("GET")
 	router.HandleFunc("/update/exoplanet/{id}", service.UpdateExoplanetById).Methods("POST")
+	router.HandleFunc("/delete/exoplanet/{id}", service.DeleteExoplanetById).Methods("DELETE")
 }
 
 func NewAPIHandler(

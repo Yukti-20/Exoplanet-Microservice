@@ -31,3 +31,11 @@ func (d *Domain) UpdateExoplanetById(id string, exoplanet models.Exoplanet) bool
 	}
 	return false
 }
+
+func (d *Domain) DeleteExoplanet(id string) bool {
+	if _, exists := d.Exoplanets[id]; exists {
+		delete(d.Exoplanets, id)
+		return true
+	}
+	return false
+}

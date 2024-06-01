@@ -7,4 +7,5 @@ type exoplanet interface {
 	ListExoplanets() []models.Exoplanet
 	GetExoplanetById(id string) (models.Exoplanet, bool)
 	UpdateExoplanetById(id string, exoplanet models.Exoplanet) bool
+	DeleteExoplanet(id string) bool
 }

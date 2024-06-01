@@ -57,5 +57,18 @@ func (s *ExoplanetService) UpdateExoplanetById(w http.ResponseWriter, r *http.Re
 		http.Error(w, "Exoplanet not found", http.StatusNotFound)
 		return
 	}
-	json.NewEncoder(w).Encode(exoplanet)
+	err := json.NewEncoder(w).Encode(exoplanet)
+	if err != nil {
+		return
+	}
+}
+
+func (s *ExoplanetService) DeleteExoplanetById(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	if !s.domain.DeleteExoplanet(id) {
+		http.Error(w, "Exoplanet not found", http.StatusNotFound)
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
 }
